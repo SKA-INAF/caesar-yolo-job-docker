@@ -130,7 +130,7 @@ WAIT_COPY=false
 COPY_WAIT_TIME=30
 REDIRECT_LOGS=true
 
-MODEL="smorphclass"
+MODEL="yolov11l_imgsize640"
 
 XMIN=-1
 XMAX=-1
