@@ -20,8 +20,7 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "==    ARGUMENT LIST     =="
 	echo "=========================="
 	echo "*** MANDATORY ARGS ***"
-	echo "--image=[FILENAME] - Input image to apply the model (.fits/.png/.jpg). Takes precedence over --inputfile option."
-	echo "--inputfile=[FILENAME] - Input filelist (.json) containing the list of images to be processed."
+	echo "--inputfile=[FILENAME] - Input filelist (.json) containing the list of images to be processed or alternatively input image (.fits/.png/.jpg)."
 	
 	echo ""
 
@@ -120,10 +119,8 @@ JOB_OUTDIR=""
 SCRIPT_DIR="/usr/bin"
 MODEL_DIR="/opt/models"
 
-IMAGE=""
-IMAGE_GIVEN=false
-DATALIST=""
-DATALIST_GIVEN=false
+INPUTFILE=""
+INPUTFILE_GIVEN=false
 
 RUN_SCRIPT=false
 WAIT_COPY=false
@@ -186,16 +183,10 @@ for item in "$@"
 do
 	case $item in 
 		## MANDATORY ##
-		--image=*)
-    	IMAGE=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`		
-			if [ "$IMAGE" != "" ]; then
-				IMAGE_GIVEN=true
-			fi
-    ;;
     --inputfile=*)
-    	DATALIST=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`		
-			if [ "$DATALIST" != "" ]; then
-				DATALIST_GIVEN=true
+    	INPUTFILE=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`		
+			if [ "$INPUTFILE" != "" ]; then
+				INPUTFILE_GIVEN=true
 			fi
     ;;
     
@@ -386,8 +377,8 @@ done
 
 
 ## Check arguments parsed
-if [ [ "$DATALIST_GIVEN" = false ] && [ "$IMAGE_GIVEN" = false ] ]; then
-  echo "ERROR: Missing or empty IMAGE/DATALIST args (hint: you must specify at least one)!"
+if [ "$INPUTFILE_GIVEN" = false ]; then
+  echo "ERROR: Missing or empty INPUTFILE args!"
   exit 1
 fi
 
@@ -400,7 +391,6 @@ if [ "$JOB_OUTDIR" = "" ]; then
   echo "WARN: Empty JOB_OUTDIR given, setting it to pwd ($PWD) ..."
 	JOB_OUTDIR="$PWD"
 fi
-
 
 
 #######################################
@@ -466,7 +456,7 @@ generate_exec_script(){
       echo 'echo "*************************************************"'
 				
 			EXE="python $SCRIPT_DIR/run.py" 
-			ARGS="--image=$IMAGE --datalist=$DATALIST --weights=$WEIGHTFILE $PREPROC_OPTS $DETECT_OPTS $RUN_OPTS $PARALLEL_RUN_OPTS $DRAW_OPTS $SAVE_OPTS "
+			ARGS="--inputfile=$INPUTFILE --weights=$WEIGHTFILE $PREPROC_OPTS $DETECT_OPTS $RUN_OPTS $PARALLEL_RUN_OPTS $DRAW_OPTS $SAVE_OPTS "
 			CMD="$EXE $ARGS"
 
 			echo "date"
