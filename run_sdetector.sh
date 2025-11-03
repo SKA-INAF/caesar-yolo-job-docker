@@ -286,7 +286,7 @@ do
 		--sigmaclip=*)
     	SIGMA_CLIP=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
     ;;
-		--sigmaclip*)
+		--clipdata*)
     	CLIP_DATA="--clip_data"
     ;;
 		--sigmaclip-low*)
