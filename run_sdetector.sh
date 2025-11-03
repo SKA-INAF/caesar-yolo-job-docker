@@ -40,7 +40,7 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "--normalize - Apply minmax normalization to images (default=disabled)"
 	echo "--normmin=[NORM_MIN] - Normalization min value (default=0)"
 	echo "--normmax=[NORM_MAX] - Normalization max value (default=1)"
-	echo "--subtract_bkg - Subtract bkg from ref channel image"
+	echo "--subtract-bkg - Subtract bkg from ref channel image"
 	echo "--sigma-bkg=[SIGMA_BKG] - Sigma clip to be used in bkg calculation (default=3)."
 	echo "--use-box-mask-in-bkg - Compute bkg value in borders left from box mask"
 	echo "--bkg-box-mask-fract=[BKG_BBOX_MASK_FRAC] - Size of mask box dimensions with respect to image size used in bkg calculation (default=0.7)"
@@ -199,6 +199,11 @@ do
 			fi
     ;;
     
+    ## OPTIONAL (MODEL OPTIONS) ##
+    --model=*)
+    	MODEL=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
+    ;;
+    
     ## OPTIONAL (RUN OPTIONS) ##
     --devices=*)
     	DEVICES=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
@@ -231,10 +236,6 @@ do
 			REDIRECT_LOGS=false
 		;;
     
-    ## OPTIONAL (MODEL OPTIONS) ##
-    --model=*)
-    	MODEL=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
-    ;;
     
     ## OPTIONAL (PRE-PROCESSING OPTIONS) ##
     --xmin=*)
