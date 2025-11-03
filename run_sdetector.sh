@@ -116,7 +116,7 @@ fi
 #######################################
 JOB_DIR=""
 JOB_OUTDIR=""
-SCRIPT_DIR="/usr/bin"
+SCRIPT_DIR="/opt/conda/bin"
 MODEL_DIR="/opt/models"
 
 INPUTFILE=""
