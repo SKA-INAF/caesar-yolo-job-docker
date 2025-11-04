@@ -182,3 +182,25 @@ fi
 echo "INFO: Running job command: $CMD ..."
 eval "$CMD"
 
+# - Read options safely into an array
+#JOB_OPTIONS="${JOB_OPTIONS:-}"
+#read -r -a JOB_ARR <<< "$JOB_OPTIONS"   # splits on IFS spaces, honors quotes
+#echo "JOB_OPTIONS: $JOB_OPTIONS"
+#echo "JOB_ARR: ${JOB_ARR[@]}"
+
+#EXE="/home/$RUNUSER/run_sdetector.sh"
+
+#if [ "$CHANGE_USER" = true ]; then
+#  # Build a safely-escaped command string for runuser -c
+#  # (runuser requires a single string; use printf %q to escape each token)
+#  build_cmd() {
+#    printf '%q ' "$EXE" "${JOB_ARR[@]}"
+#  }
+#  CMD_STR=$(build_cmd)
+#  echo "INFO: Running job command: runuser -l $RUNUSER -g $RUNUSER -c $CMD_STR ..."
+#  runuser -l "$RUNUSER" -g "$RUNUSER" -c "$CMD_STR"
+#else
+#  echo "INFO: Running job command as current user ..."
+#  "$EXE" "${JOB_ARR[@]}"
+#fi
+
