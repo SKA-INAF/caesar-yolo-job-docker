@@ -280,25 +280,25 @@ do
 		--clipdata*)
     	CLIP_DATA="--clip_data"
     ;;
-		--sigmaclip-low*)
+		--sigmaclip-low=*)
     	SIGMA_CLIP_LOW=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;	
-    --sigmaclip-up*)
+    --sigmaclip-up=*)
     	SIGMA_CLIP_UP=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
-		--sigmaclip-chid*)
+		--sigmaclip-chid=*)
     	CLIP_CHID=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
     --zscale*)
     	ZSCALE_STRETCH="--zscale_stretch"
     ;;
-		--zscale-contrasts*)
+		--zscale-contrasts=*)
     	ZSCALE_CONTRASTS=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
 		--chan3-preproc*)
     	CHAN3_PREPROC="--chan3_preproc"
     ;;
-		--sigmaclip-baseline*)
+		--sigmaclip-baseline=*)
     	SIGMA_CLIP_BASELINE=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;  
     --nchans=*)
@@ -396,7 +396,7 @@ fi
 #######################################
 ##   SET CLASSIFIER OPTIONS
 #######################################
-PREPROC_OPTS="--xmin=$XMIN --xmax=$XMAX --ymin=$YMIN --ymax=$YMAX --imgsize=$IMGSIZE $PREPROCESSING $NORMALIZE_MINMAX --norm_min=$NORM_MIN --norm_max=$NORM_MAX $SUBTRACT_BKG --sigma_bkg=$SIGMA_BKG $USE_BOX_MASK_IN_BKG --bkg_box_mask_fract=$BKG_BOX_MASK_FRACT --bkg_chid=$BKG_CHID $CLIP_SHIFT_DATA --sigma_clip=$SIGMA_CLIP $CLIP_DATA --sigma_clip_low=$SIGMA_CLIP_LOW --sigma_clip_up=$SIGMA_CLIP_UP --clip_chid=$CLIP_CHID $ZSCALE_STRETCH --zscale_contrasts=$ZSCALE_CONTRASTS $CHAN3_PREPROC --sigma_clip_baseline=$SIGMA_CLIP_BASELINE --nchannels=$NCHANS "
+PREPROC_OPTS="--xmin=$XMIN --xmax=$XMAX --ymin=$YMIN --ymax=$YMAX --imgsize=$IMGSIZE $PREPROCESSING $NORMALIZE_MINMAX --norm_min=$NORM_MIN --norm_max=$NORM_MAX $SUBTRACT_BKG --sigma_bkg=$SIGMA_BKG $USE_BOX_MASK_IN_BKG --bkg_box_mask_fract=$BKG_BOX_MASK_FRACT --bkg_chid=$BKG_CHID $CLIP_SHIFT_DATA --sigma_clip=$SIGMA_CLIP $CLIP_DATA --sigma_clip_low=$SIGMA_CLIP_LOW --sigma_clip_up=$SIGMA_CLIP_UP --clip_chid=$CLIP_CHID $ZSCALE_STRETCH --zscale_contrasts='""$ZSCALE_CONTRASTS""' $CHAN3_PREPROC --sigma_clip_baseline=$SIGMA_CLIP_BASELINE --nchannels=$NCHANS "
 
 if [ "$MODEL" = "yolov11l_imgsize128" ]; then
 	WEIGHTFILE="$MODEL_DIR/weights-yolov11l_scratch_imgsize128_nepochs300.pt"
