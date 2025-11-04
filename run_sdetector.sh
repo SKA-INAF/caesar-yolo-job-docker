@@ -181,6 +181,8 @@ OUTFILE_CATALOG=""
 
 for item in "$@"
 do
+  #echo "item: $item"
+  
 	case $item in 
 		## MANDATORY ##
     --inputfile=*)
@@ -188,6 +190,7 @@ do
 			if [ "$INPUTFILE" != "" ]; then
 				INPUTFILE_GIVEN=true
 			fi
+			#echo "--> Parsed INPUTFILE=$INPUTFILE"
     ;;
     
     ## OPTIONAL (MODEL OPTIONS) ##
@@ -207,6 +210,7 @@ do
     ;;
     --scriptdir=*)
     	SCRIPT_DIR=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
+    	#echo "--> Parsed SCRIPT_DIR=$SCRIPT_DIR"
     ;;
     --modeldir=*)
     	MODEL_DIR=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
@@ -289,12 +293,15 @@ do
 		--sigmaclip-chid=*)
     	CLIP_CHID=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
+    # NB: Put this before --zscale otherwise the --zscale matches also the --zscale-contrasts
+    --zscale-contrasts=*)
+    	ZSCALE_CONTRASTS=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
+    	#echo "--> Parsed ZSCALE_CONTRASTS=$ZSCALE_CONTRASTS"
+    ;;
     --zscale*)
     	ZSCALE_STRETCH="--zscale_stretch"
     ;;
-		--zscale-contrasts=*)
-    	ZSCALE_CONTRASTS=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
-    ;;
+		
 		--chan3-preproc*)
     	CHAN3_PREPROC="--chan3_preproc"
     ;;
@@ -396,7 +403,10 @@ fi
 #######################################
 ##   SET CLASSIFIER OPTIONS
 #######################################
-PREPROC_OPTS="--xmin=$XMIN --xmax=$XMAX --ymin=$YMIN --ymax=$YMAX --imgsize=$IMGSIZE $PREPROCESSING $NORMALIZE_MINMAX --norm_min=$NORM_MIN --norm_max=$NORM_MAX $SUBTRACT_BKG --sigma_bkg=$SIGMA_BKG $USE_BOX_MASK_IN_BKG --bkg_box_mask_fract=$BKG_BOX_MASK_FRACT --bkg_chid=$BKG_CHID $CLIP_SHIFT_DATA --sigma_clip=$SIGMA_CLIP $CLIP_DATA --sigma_clip_low=$SIGMA_CLIP_LOW --sigma_clip_up=$SIGMA_CLIP_UP --clip_chid=$CLIP_CHID $ZSCALE_STRETCH --zscale_contrasts='""$ZSCALE_CONTRASTS""' $CHAN3_PREPROC --sigma_clip_baseline=$SIGMA_CLIP_BASELINE --nchannels=$NCHANS "
+#PREPROC_OPTS="--xmin=$XMIN --xmax=$XMAX --ymin=$YMIN --ymax=$YMAX --imgsize=$IMGSIZE $PREPROCESSING $NORMALIZE_MINMAX --norm_min=$NORM_MIN --norm_max=$NORM_MAX $SUBTRACT_BKG --sigma_bkg=$SIGMA_BKG $USE_BOX_MASK_IN_BKG --bkg_box_mask_fract=$BKG_BOX_MASK_FRACT --bkg_chid=$BKG_CHID $CLIP_SHIFT_DATA --sigma_clip=$SIGMA_CLIP $CLIP_DATA --sigma_clip_low=$SIGMA_CLIP_LOW --sigma_clip_up=$SIGMA_CLIP_UP --clip_chid=$CLIP_CHID $ZSCALE_STRETCH --zscale_contrasts='""$ZSCALE_CONTRASTS""' $CHAN3_PREPROC --sigma_clip_baseline=$SIGMA_CLIP_BASELINE --nchannels=$NCHANS "
+
+PREPROC_OPTS="--xmin=$XMIN --xmax=$XMAX --ymin=$YMIN --ymax=$YMAX --imgsize=$IMGSIZE $PREPROCESSING $NORMALIZE_MINMAX --norm_min=$NORM_MIN --norm_max=$NORM_MAX $SUBTRACT_BKG --sigma_bkg=$SIGMA_BKG $USE_BOX_MASK_IN_BKG --bkg_box_mask_fract=$BKG_BOX_MASK_FRACT --bkg_chid=$BKG_CHID $CLIP_SHIFT_DATA --sigma_clip=$SIGMA_CLIP $CLIP_DATA --sigma_clip_low=$SIGMA_CLIP_LOW --sigma_clip_up=$SIGMA_CLIP_UP --clip_chid=$CLIP_CHID $ZSCALE_STRETCH --zscale_contrasts=$ZSCALE_CONTRASTS $CHAN3_PREPROC --sigma_clip_baseline=$SIGMA_CLIP_BASELINE --nchannels=$NCHANS "
+
 
 if [ "$MODEL" = "yolov11l_imgsize128" ]; then
 	WEIGHTFILE="$MODEL_DIR/weights-yolov11l_scratch_imgsize128_nepochs300.pt"
@@ -421,6 +431,12 @@ PARALLEL_RUN_OPTS="$SPLIT_IMG_IN_TILES --tile_xsize=$TILE_XSIZE --tile_ysize=$TI
 DRAW_OPTS="$DRAW_PLOTS $DRAW_CLASS_LABEL_IN_CAPTION "
 SAVE_OPTS="$SAVE_PLOTS $SAVE_TILE_CATALOG $SAVE_TILE_REGION $SAVE_TILE_IMG --detect_outfile=$OUTFILE --detect_outfile_json=$OUTFILE_CATALOG "
 
+echo "PREPROC_OPTS: $PREPROC_OPTS"
+echo "DETECT_OPTS: $DETECT_OPTS"
+echo "RUN_OPTS: $RUN_OPTS"
+echo "PARALLEL_RUN_OPTS: $PARALLEL_RUN_OPTS"
+echo "DRAW_OPTS: $DRAW_OPTS"
+echo "SAVE_OPTS: $SAVE_OPTS"
 
 #######################################
 ##   DEFINE GENERATE EXE SCRIPT FCN
@@ -452,7 +468,7 @@ generate_exec_script(){
 			echo " "
 
       echo 'echo "*************************************************"'
-      echo 'echo "****         RUN CLASSIFIER                  ****"'
+      echo 'echo "****         RUN SDETECTOR                   ****"'
       echo 'echo "*************************************************"'
 				
 			EXE="python $SCRIPT_DIR/run.py" 
@@ -473,7 +489,7 @@ generate_exec_script(){
 			echo " "
 
 			echo 'JOB_STATUS=$?'
-			echo 'echo "Classifier terminated with status=$JOB_STATUS"'
+			echo 'echo "Source detection terminated with status=$JOB_STATUS"'
 
 			echo "date"
 
