@@ -101,8 +101,9 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "--save-tile-catalog - Enable saving of subtile catalog files (default=disabled)"
 	echo "--save-tile-region - Enable saving of subtile DS9 region files (default=disabled)"
 	echo "--save-tile-img - Enable saving of subtile image files (default=disabled)"
-	echo "--outfile=[FILENAME] - Output plot PNG filename (internally generated if left empty) (default=empty)"
+	echo "--outfile-plot=[FILENAME] - Output plot PNG filename (internally generated if left empty) (default=empty)"
 	echo "--outfile-catalog=[FILENAME] - Output json filename with detected objects (internally generated if left empty for --image option) (default=empty)"
+	echo "--outfile-region=[FILENAME] - Output DS9 region filename with detected objects (internally generated if left empty for --image option) (default=empty)"
 	
 	echo ""
 	
@@ -176,8 +177,9 @@ SAVE_PLOTS=""
 SAVE_TILE_CATALOG=""
 SAVE_TILE_REGION=""
 SAVE_TILE_IMG=""
-OUTFILE=""
+OUTFILE_PLOT=""
 OUTFILE_CATALOG=""
+OUTFILE_REGION=""
 
 for item in "$@"
 do
@@ -367,11 +369,14 @@ do
     --save-tile-img*)
     	SAVE_TILE_IMG="--save_tile_img"
     ;;
-    --outfile=*)
-    	OUTFILE=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
+    --outfile-plot=*)
+    	OUTFILE_PLOT=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
     --outfile-catalog=*)
     	OUTFILE_CATALOG=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
+    ;;
+    --outfile-region=*)
+    	OUTFILE_REGION=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     ;;
 	
     *)
@@ -420,6 +425,9 @@ elif [ "$MODEL" = "yolov11l_imgsize512" ]; then
 elif [ "$MODEL" = "yolov11l_imgsize640" ]; then
 	WEIGHTFILE="$MODEL_DIR/weights-yolov11l_scratch_imgsize640_nepochs300.pt"
 	
+elif [ "$MODEL" = "yolov11l_imgsize1024" ]; then
+	WEIGHTFILE="$MODEL_DIR/weights-yolov11l_scratch_imgsize1024_nepochs300.pt"
+	
 else 
 	echo "ERROR: Unknown/not supported MODEL argument $MODEL given!"
   exit 1
@@ -429,7 +437,7 @@ DETECT_OPTS="--scoreThr=$SCORE_THR --iouThr=$IOU_THR --merge_overlap_iou_thr_sof
 RUN_OPTS="--devices=$DEVICES $MULTIGPU "
 PARALLEL_RUN_OPTS="$SPLIT_IMG_IN_TILES --tile_xsize=$TILE_XSIZE --tile_ysize=$TILE_YSIZE --tile_xstep=$TILE_XSTEP --tile_ystep=$TILE_YSTEP --max_ntasks_per_worker=$MAX_NTASKS_PER_WORKER "
 DRAW_OPTS="$DRAW_PLOTS $DRAW_CLASS_LABEL_IN_CAPTION "
-SAVE_OPTS="$SAVE_PLOTS $SAVE_TILE_CATALOG $SAVE_TILE_REGION $SAVE_TILE_IMG --detect_outfile=$OUTFILE --detect_outfile_json=$OUTFILE_CATALOG "
+SAVE_OPTS="$SAVE_PLOTS $SAVE_TILE_CATALOG $SAVE_TILE_REGION $SAVE_TILE_IMG --detect_outfile_plot=$OUTFILE_PLOT --detect_outfile_json=$OUTFILE_CATALOG --detect_outfile_region=$OUTFILE_REGION "
 
 echo "PREPROC_OPTS: $PREPROC_OPTS"
 echo "DETECT_OPTS: $DETECT_OPTS"
