@@ -516,7 +516,7 @@ generate_exec_script(){
 				echo "# - Copy output json data"
 				echo 'tab_count=`ls -1 *.json 2>/dev/null | wc -l`'
 				echo 'if [ $tab_count != 0 ] ; then'
-				echo "  echo \"INFO: Copying output table file(s) to $JOB_OUTDIR ...\""
+				echo "  echo \"INFO: Copying output json catalog file(s) to $JOB_OUTDIR ...\""
 				echo "  cp *.json $JOB_OUTDIR"
 				echo "fi"
 
@@ -525,7 +525,7 @@ generate_exec_script(){
 				echo "# - Copy output DS9 region data"
 				echo 'tab_count=`ls -1 *.reg 2>/dev/null | wc -l`'
 				echo 'if [ $tab_count != 0 ] ; then'
-				echo "  echo \"INFO: Copying output table file(s) to $JOB_OUTDIR ...\""
+				echo "  echo \"INFO: Copying output DS9 region file(s) to $JOB_OUTDIR ...\""
 				echo "  cp *.reg $JOB_OUTDIR"
 				echo "fi"
 				
@@ -534,7 +534,7 @@ generate_exec_script(){
 				echo "# - Copy output PNG data"
 				echo 'tab_count=`ls -1 *.png 2>/dev/null | wc -l`'
 				echo 'if [ $tab_count != 0 ] ; then'
-				echo "  echo \"INFO: Copying output table file(s) to $JOB_OUTDIR ...\""
+				echo "  echo \"INFO: Copying output plot file(s) to $JOB_OUTDIR ...\""
 				echo "  cp *.png $JOB_OUTDIR"
 				echo "fi"
 				
@@ -543,8 +543,17 @@ generate_exec_script(){
 				echo "# - Copy output FITS data"
 				echo 'tab_count=`ls -1 *.fits 2>/dev/null | wc -l`'
 				echo 'if [ $tab_count != 0 ] ; then'
-				echo "  echo \"INFO: Copying output table file(s) to $JOB_OUTDIR ...\""
+				echo "  echo \"INFO: Copying output image file(s) to $JOB_OUTDIR ...\""
 				echo "  cp *.fits $JOB_OUTDIR"
+				echo "fi"
+				
+				echo " "
+				
+				echo "# - Copy output logs"
+				echo 'tab_count=`ls -1 *.log 2>/dev/null | wc -l`'
+				echo 'if [ $tab_count != 0 ] ; then'
+				echo "  echo \"INFO: Copying output log file(s) to $JOB_OUTDIR ...\""
+				echo "  cp *.png $JOB_OUTDIR"
 				echo "fi"
 				
 				echo " "
