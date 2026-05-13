@@ -51,7 +51,7 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "--sigmaclip-up=[SIGMA_CLIP_UP] - Max sigma clipping value (default=10)"
 	echo "--sigmaclip-chid=[SIGMA_CHID] - Channel used to apply clipping (-1=all channels) (default=-1)"
 	echo "--zscale - Apply zscale transform to each image channel"
-	echo "--zscale-contrasts=[CONTRASTS] - zscale transform contrast parameters (separated by commas) (default=0.25,0.25,0.25)"
+	echo "--zscale-contrasts=[CONTRASTS] - zscale transform contrast parameters (separated by colons) (default=0.25:0.25:0.25)"
 	echo "--chan3-preproc - Use the 3 channel pre-processor"
 	echo "--sigmaclip-baseline=[SIGMA_CLIP_LOW] - Lower sigma threshold to be used for clipping pixels below (mean-sigma_low*stddev) in first channel of 3-channel preprocessing (default=0)"
 	echo "--nchans=[NCHANS] - Number of channels. If you modify channels in preprocessing you must set this accordingly (default=1)"
@@ -62,7 +62,7 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "--score-thr=[THR] - Object detection score threshold to be used during test (default=0.7)"
 	echo "--iou-thr=[THR] - Intersection Over Union (IoU) threshold for Non-Maximum Suppression (NMS) (default=0.5)"
 	echo "--merge-overlap-iou-thr-soft=[THR] - IOU threshold used to merge overlapping detected objects with same class (default=0.3)"
-	echo "--merge_overlap-iou-thr-hard=[THR] - IOU threshold used to merge overlapping detected objects, even those with same class (default=0.8)"
+	echo "--merge-overlap-iou-thr-hard=[THR] - IOU threshold used to merge overlapping detected objects, even those with same class (default=0.8)"
 	
 	echo ""
 	
