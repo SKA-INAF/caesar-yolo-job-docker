@@ -452,6 +452,9 @@ echo "SAVE_OPTS: $SAVE_OPTS"
 # - Set shfile
 shfile="run_predict.sh"
 
+# - Set log file
+logfile="sdetector.log"
+
 generate_exec_script(){
 
 	local shfile=$1
@@ -553,7 +556,7 @@ generate_exec_script(){
 				echo 'tab_count=`ls -1 *.log 2>/dev/null | wc -l`'
 				echo 'if [ $tab_count != 0 ] ; then'
 				echo "  echo \"INFO: Copying output log file(s) to $JOB_OUTDIR ...\""
-				echo "  cp *.png $JOB_OUTDIR"
+				echo "  cp *.log $JOB_OUTDIR"
 				echo "fi"
 				
 				echo " "
