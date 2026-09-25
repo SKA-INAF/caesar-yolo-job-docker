@@ -173,7 +173,8 @@ JOB_OPTIONS="$RUN_OPTIONS $DATA_OPTIONS $JOB_ARGS "
 EXE="/home/$RUNUSER/run_sdetector.sh"
 
 if [ "$CHANGE_USER" = true ]; then
-	CMD="runuser -l $RUNUSER -g $RUNUSER -c'""$EXE $JOB_OPTIONS""'"
+	##CMD="runuser -l $RUNUSER -g $RUNUSER -c'""$EXE $JOB_OPTIONS""'"
+	CMD="runuser -l $RUNUSER -g $RUNUSER -c \"$EXE $JOB_OPTIONS\""
 else
 	CMD="$EXE $JOB_OPTIONS"
 fi

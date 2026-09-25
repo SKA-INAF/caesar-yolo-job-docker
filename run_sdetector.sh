@@ -26,14 +26,14 @@ if [ "$NARGS" -lt 1 ]; then
 
 	echo "*** OPTIONAL ARGS ***"
 	echo "=== MODEL OPTIONS ==="
-	echo "--model=[MODEL] - Pretrained model to be used in prediction. Options are {yolov11l_imgsize128,yolov11l_imgsize256,yolov11l_imgsize512,yolov11l_imgsize640}. Default: yolov11l_imgsize640 "
+	echo "--model=[MODEL] - Pretrained model to be used in prediction. Options are {yolov11l_imgsize128,yolov11l_imgsize256,yolov11l_imgsize512,yolov11l_imgsize640,yolov11l_imgsize1024}. Default: yolov11l_imgsize640 "
 	echo ""
 	
 	echo "=== PRE-PROCESSING OPTIONS ==="
 	echo "--xmin=[VALUE] - Image min x to be read (read all if -1) (default=-1)"
 	echo "--xmax=[VALUE] - Image max x to be read (read all if -1) (default=-1)"
 	echo "--ymin=[VALUE] - Image min y to be read (read all if -1) (default=-1)"
-	echo "--ymin=[VALUE] - Image max y to be read (read all if -1) (default=-1)"
+	echo "--ymax=[VALUE] - Image max y to be read (read all if -1) (default=-1)"
 	echo "--imgsize=[IMGSIZE] - Size in pixels used for image resize (default=640)"
 	echo "--preprocessing - Apply pre-processing to input image (default=disabled)"
 	echo "--normalize - Apply minmax normalization to images (default=disabled)"
@@ -59,7 +59,7 @@ if [ "$NARGS" -lt 1 ]; then
 	echo ""
 	
 	echo "=== DETECT OPTIONS ==="
-	echo "--score-thr=[THR] - Object detection score threshold to be used during test (default=0.7)"
+	echo "--score-thr=[THR] - Object detection score threshold to be used during test (default=0.5)"
 	echo "--iou-thr=[THR] - Intersection Over Union (IoU) threshold for Non-Maximum Suppression (NMS) (default=0.5)"
 	echo "--merge-overlap-iou-thr-soft=[THR] - IOU threshold used to merge overlapping detected objects with same class (default=0.3)"
 	echo "--merge-overlap-iou-thr-hard=[THR] - IOU threshold used to merge overlapping detected objects, even those with same class (default=0.8)"
@@ -157,7 +157,7 @@ CHAN3_PREPROC=""
 SIGMA_CLIP_BASELINE=0
 NCHANS=1
 
-SCORE_THR=0.7
+SCORE_THR=0.5
 IOU_THR=0.5
 MERGE_OVERLAP_IOU_THR_SOFT=0.3
 MERGE_OVERLAP_IOU_THR_HARD=0.8
@@ -300,9 +300,9 @@ do
     	ZSCALE_CONTRASTS=`echo $item | sed 's/[-a-zA-Z0-9]*=//'`
     	#echo "--> Parsed ZSCALE_CONTRASTS=$ZSCALE_CONTRASTS"
     ;;
-    --zscale*)
-    	ZSCALE_STRETCH="--zscale_stretch"
-    ;;
+    --zscale)
+			ZSCALE_STRETCH="--zscale_stretch"
+		;;
 		
 		--chan3-preproc*)
     	CHAN3_PREPROC="--chan3_preproc"
@@ -462,7 +462,7 @@ generate_exec_script(){
 	
 	echo "INFO: Creating sh file $shfile ..."
 	( 
-			echo "#!/bin/bash -e"
+			echo "#!/bin/bash"
 			
       echo " "
       echo " "
