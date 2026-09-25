@@ -37,8 +37,8 @@ if [ "$NARGS" -lt 1 ]; then
 	echo "--imgsize=[IMGSIZE] - Size in pixels used for image resize (default=640)"
 	echo "--preprocessing - Apply pre-processing to input image (default=disabled)"
 	echo "--normalize - Apply minmax normalization to images (default=disabled)"
-	echo "--normmin=[NORM_MIN] - Normalization min value (default=0)"
-	echo "--normmax=[NORM_MAX] - Normalization max value (default=1)"
+	echo "--norm-min=[NORM_MIN] - Normalization min value (default=0)"
+	echo "--norm-max=[NORM_MAX] - Normalization max value (default=1)"
 	echo "--subtract-bkg - Subtract bkg from ref channel image"
 	echo "--sigma-bkg=[SIGMA_BKG] - Sigma clip to be used in bkg calculation (default=3)."
 	echo "--use-box-mask-in-bkg - Compute bkg value in borders left from box mask"
@@ -256,10 +256,10 @@ do
 		--normalize*)
     	NORMALIZE_MINMAX="--normalize_minmax"
     ;;
-    --normmin=*)
+    --norm-min=*)
     	NORM_MIN=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
     ;;
-    --normmax=*)
+    --norm-max=*)
     	NORM_MAX=`echo $item | /bin/sed 's/[-a-zA-Z0-9]*=//'`
     ;;
 		--subtract-bkg*)
